@@ -1,11 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Button, 
-  Typography, 
-  Row, 
-  Col, 
-  Card, 
+import {
+  Button,
+  Typography,
+  Row,
+  Col,
+  Card,
   Space,
   Statistic,
   Timeline,
@@ -37,6 +37,13 @@ import {
   StarFilled,
   CheckCircleOutlined
 } from '@ant-design/icons';
+import img1 from '../assets/design/1.jpg';
+import img2 from '../assets/design/2.jpg';
+import img3 from '../assets/design/3.jpg';
+import img4 from '../assets/design/4.jpg';
+import img5 from '../assets/design/5.jpg';
+import img6 from '../assets/design/6.jpg';
+import img7 from '../assets/design/7.jpg';
 import './LandingPage.css';
 
 const { Title, Text, Paragraph } = Typography;
@@ -45,6 +52,9 @@ const { Step } = Steps;
 function LandingPage() {
   const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [nextImageIndex, setNextImageIndex] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const heroRef = useRef(null);
   const statsRef = useRef(null);
   const featuresRef = useRef(null);
@@ -139,6 +149,8 @@ function LandingPage() {
     { name: "AWS SageMaker", color: "#FF9900" }
   ];
 
+  const images = [img1, img2, img3, img4, img5, img6, img7];
+
   const stats = [
     { value: "99.8%", label: "Accuracy Rate", suffix: "+", icon: "🎯" },
     { value: "2.3s", label: "Avg Processing Time", suffix: "", icon: "⚡" },
@@ -155,16 +167,29 @@ function LandingPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const changeImage = () => {
+      setIsTransitioning(true);
+      setNextImageIndex((currentImageIndex + 1) % images.length);
+      setTimeout(() => {
+        setCurrentImageIndex(nextImageIndex);
+        setIsTransitioning(false);
+      }, 2000);
+    };
+    const interval = setInterval(changeImage, 6000);
+    return () => clearInterval(interval);
+  }, [images.length, currentImageIndex, nextImageIndex]);
+
   const handleGetStarted = () => {
     navigate('/try-on');
   };
 
   return (
     <div className="landing-page">
-      {/* Hero Section with 3D Background */}
       <section className="hero-section" ref={heroRef}>
         <div className="hero-background">
-          <div className="particle-layer"></div>
+          <div className="bg-layer current" style={{ backgroundImage: `url(${images[currentImageIndex]})`, opacity: isTransitioning ? 0 : 1, filter: isTransitioning ? 'blur(5px)' : 'blur(0px)', transform: isTransitioning ? 'rotate(2deg) scale(0.98) skew(3deg, 1deg)' : 'rotate(0deg) scale(1) skew(0deg, 0deg)' }}></div>
+          <div className="bg-layer next" style={{ backgroundImage: `url(${images[nextImageIndex]})`, opacity: isTransitioning ? 1 : 0, filter: 'blur(0px)', transform: isTransitioning ? 'rotate(0deg) scale(1) skew(0deg, 0deg)' : 'rotate(-2deg) scale(0.95) skew(-3deg, -1deg)' }}></div>
           <div className="gradient-overlay"></div>
         </div>
         
@@ -214,16 +239,6 @@ function LandingPage() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-        
-        {/* 3D Model Preview */}
-        <div className="model-preview">
-          <div className="model-container">
-            <div className="model-placeholder">
-              <div className="model-rotate"></div>
-              <div className="model-cloth"></div>
-            </div>
           </div>
         </div>
       </section>
