@@ -22,11 +22,14 @@ import {
   BulbFilled,
   GithubOutlined,
   LinkedinOutlined,
+  UserOutlined,
+  ShopOutlined,
 } from "@ant-design/icons";
 
 import ImageUpload from "./ImageUpload";
 import Footer from './Footer';
 import LandingPage from "./LandingPage"; // Added import
+import bgVideo from '../assets/design/8.mp4';
 
 const { Header, Content} = Layout;
 const { Title, Text } = Typography;
@@ -48,6 +51,8 @@ function TryOnPage() {
   const [gender, setGender] = useState("");
   const [garmentType, setGarmentType] = useState("");
   const [style, setStyle] = useState("");
+  const [fadeOut, setFadeOut] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const { Option } = Select;
 
@@ -65,6 +70,33 @@ function TryOnPage() {
       resultRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [result]);
+
+  useEffect(() => {
+    if (!loading) {
+      setFadeOut(true);
+      setTimeout(() => setFadeOut(false), 500);
+    } else {
+      setFadeOut(false);
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (loading) {
+      setProgress(0);
+      const interval = setInterval(() => {
+        setProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          return prev + 1;
+        });
+      }, 200);
+      return () => clearInterval(interval);
+    } else {
+      setProgress(100);
+    }
+  }, [loading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,7 +146,60 @@ function TryOnPage() {
   const textColor = isDarkMode ? "#e4e4e4" : "#111827";
   const subText = isDarkMode ? "#9ca3af" : "#4b5563";
 
+  const loaderStyles = `
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      background: rgba(255,255,255,0.1);
+      transition: opacity 0.5s ease;
+    }
+    .loading-overlay.fade-out {
+      opacity: 0;
+    }
+    .loading-content {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      padding: 40px 50px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      perspective: 1000px;
+    }
+    .progress-container {
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto 20px;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .progress-fill {
+      height: 100%;
+      background: #10b981;
+      border-radius: 10px;
+      transition: width 0.1s ease;
+    }
+    p {
+      color: #111827;
+    }
+  `;
+
   return (
+    <>
+    <style dangerouslySetInnerHTML={{ __html: loaderStyles }} />
     <ConfigProvider
       theme={{
         algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
@@ -153,8 +238,36 @@ function TryOnPage() {
             unCheckedChildren={<BulbOutlined />}
           />
         </Header>
-        <Content style={{ padding: "2rem 1rem" }}>
-          <div className="max-w-5xl mx-auto">
+        <Content style={{ padding: "2rem 1rem", position: 'relative' }}>
+          <video
+            src={bgVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              zIndex: -1,
+            }}
+            disablePictureInPicture
+            controls={false}
+            preload="auto"
+          />
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: isDarkMode ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.1)',
+            zIndex: -1
+          }} />
+          <div className="max-w-5xl mx-auto" style={{ position: 'relative', zIndex: 1 }}>
             <Title
               level={1}
               className="text-center"
@@ -163,7 +276,8 @@ function TryOnPage() {
               Try-On Clothes in Seconds
             </Title>
 
-            <form onSubmit={handleSubmit}>
+            <div style={{ background: cardColor, padding: 40, borderRadius: 16, boxShadow: isDarkMode ? '0 10px 30px rgba(0,0,0,0.3)' : '0 10px 30px rgba(0,0,0,0.1)', marginBottom: 40 }}>
+              <form onSubmit={handleSubmit}>
               <Row gutter={[24, 24]}>
                 {/* Model Section */}
                 <Col xs={24} md={12}>
@@ -178,7 +292,7 @@ function TryOnPage() {
                       level={4}
                       style={{ color: textColor, marginBottom: 16 }}
                     >
-                      Model Image
+                      <UserOutlined style={{ marginRight: 8, color: textColor }} /> Model Image
                     </Title>
 
                     <ImageUpload
@@ -234,7 +348,7 @@ function TryOnPage() {
                       level={4}
                       style={{ color: textColor, marginBottom: 16 }}
                     >
-                      Garment Image
+                      <ShopOutlined style={{ marginRight: 8, color: textColor }} /> Garment Image
                     </Title>
 
                     <ImageUpload
@@ -330,6 +444,7 @@ function TryOnPage() {
                 </Button>
               </div>
             </form>
+            </div>
 
             {result && (
               <div ref={resultRef} className="mt-20">
@@ -513,6 +628,19 @@ function TryOnPage() {
               </div>
             )}
           </div>
+          {(loading || fadeOut) && (
+            <div className={`loading-overlay ${fadeOut ? 'fade-out' : ''}`}>
+              <div className="loading-content">
+                <div className="progress-container">
+                  <div className="progress-bar">
+                    <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+                  </div>
+                  <p style={{ textAlign: 'center', marginTop: '10px' }}>{progress}%</p>
+                </div>
+                <p>Processing virtual try-on...</p>
+              </div>
+            </div>
+          )}
         </Content>
 
         <Footer isDarkMode={isDarkMode} />
@@ -520,6 +648,7 @@ function TryOnPage() {
         <ToastContainer theme={isDarkMode ? "dark" : "light"} />
       </Layout>
     </ConfigProvider>
+    </>
   );
 }
 
