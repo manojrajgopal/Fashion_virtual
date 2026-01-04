@@ -31,7 +31,7 @@
   height: 100%;
   background-size: cover;
   background-position: center;
-  transition: all 2s ease-in-out;
+  transition: all 1s ease-in-out;
 }
 
 .particle-layer {
@@ -473,8 +473,7 @@
 
 /* Use Cases */
 .usecases-section {
-  padding: 100px 5%;
-  background: white;
+  position: relative;
 }
 
 .usecases-container {
@@ -485,6 +484,32 @@
 .usecase-card {
   border-radius: 12px !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.usecases-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.usecases-content {
+  position: relative;
+  z-index: 3;
+  padding: 100px 5%;
+}
+
+.rainbow-text {
+  background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 300% 300%;
+  animation: gradientShift 3s ease infinite;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 /* CTA Section */

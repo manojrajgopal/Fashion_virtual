@@ -44,6 +44,8 @@ import img4 from '../assets/design/4.jpg';
 import img5 from '../assets/design/5.jpg';
 import img6 from '../assets/design/6.jpg';
 import img7 from '../assets/design/7.jpg';
+import demoVideo from '../assets/design/demo.mp4';
+import bgVideo from '../assets/design/9.mp4';
 import './LandingPage.css';
 
 const { Title, Text, Paragraph } = Typography;
@@ -305,31 +307,7 @@ function LandingPage() {
           ))}
         </Steps>
         
-        <div className="process-visualization">
-          <div className="process-diagram">
-            <div className="diagram-step upload-step">
-              <div className="step-circle">1</div>
-              <div className="step-image"></div>
-              <Text strong>Image Upload</Text>
-            </div>
-            
-            <div className="diagram-arrow">→</div>
-            
-            <div className="diagram-step process-step">
-              <div className="step-circle">2</div>
-              <div className="step-ai">🤖</div>
-              <Text strong>AI Processing</Text>
-            </div>
-            
-            <div className="diagram-arrow">→</div>
-            
-            <div className="diagram-step result-step">
-              <div className="step-circle">3</div>
-              <div className="step-result"></div>
-              <Text strong>Result Generation</Text>
-            </div>
-          </div>
-        </div>
+        <video src={demoVideo} autoPlay loop muted playsInline controls={false} style={{ width: '100%', height: 'auto' }} />
       </section>
 
       {/* Technology Stack */}
@@ -355,116 +333,34 @@ function LandingPage() {
           ))}
         </div>
         
-        <div className="tech-stats">
-          <Row gutter={[24, 24]}>
-            <Col xs={12} md={6}>
-              <Statistic 
-                title="AI Models" 
-                value={12} 
-                prefix={<BulbOutlined />}
-                className="tech-stat"
-              />
-            </Col>
-            <Col xs={12} md={6}>
-              <Statistic 
-                title="Processing Nodes" 
-                value={256} 
-                prefix={<CloudSyncOutlined />}
-                className="tech-stat"
-              />
-            </Col>
-            <Col xs={12} md={6}>
-              <Statistic 
-                title="Data Points" 
-                value={10.5} 
-                suffix="M" 
-                prefix={<TeamOutlined />}
-                className="tech-stat"
-              />
-            </Col>
-            <Col xs={12} md={6}>
-              <Statistic 
-                title="Uptime" 
-                value={99.9} 
-                suffix="%" 
-                prefix={<SafetyOutlined />}
-                className="tech-stat"
-              />
-            </Col>
-          </Row>
-        </div>
-      </section>
+     </section>
 
-      {/* Testimonials */}
-      <section className="testimonials-section" ref={testimonialsRef}>
-        <div className="section-header">
-          <Title level={2} className="section-title">
-            Trusted by Industry Leaders
-          </Title>
-        </div>
-        
-        <Row gutter={[24, 24]} className="testimonials-grid">
-          {testimonials.map((testimonial, index) => (
-            <Col xs={24} md={8} key={index}>
-              <Card className="testimonial-card">
-                <div className="testimonial-rating">
-                  {[...Array(5)].map((_, i) => (
-                    <StarFilled key={i} style={{ color: '#FFD700' }} />
-                  ))}
-                </div>
-                <Paragraph className="testimonial-content">
-                  "{testimonial.content}"
-                </Paragraph>
-                <div className="testimonial-author">
-                  <Avatar size="large" className="author-avatar">
-                    {testimonial.avatar}
-                  </Avatar>
-                  <div className="author-info">
-                    <Text strong>{testimonial.name}</Text>
-                    <Text type="secondary">{testimonial.role}</Text>
-                  </div>
-                </div>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </section>
-
-      {/* Use Cases */}
+            {/* Use Cases */}
       <section className="usecases-section">
-        <div className="section-header">
-          <Title level={2} className="section-title">
-            Transforming Multiple Industries
-          </Title>
-        </div>
-        
-        <div className="usecases-container">
-          <Timeline mode="alternate" className="usecases-timeline">
-            <Timeline.Item dot={<GlobalOutlined style={{ fontSize: '24px' }} />}>
-              <Card title="E-commerce" className="usecase-card">
-                <Paragraph>
-                  Reduce return rates by 60% and increase conversion rates by 45% with virtual try-ons.
-                </Paragraph>
-                <Tag color="green">High ROI</Tag>
-              </Card>
-            </Timeline.Item>
-            <Timeline.Item dot={<TrophyOutlined style={{ fontSize: '24px' }} />}>
-              <Card title="Fashion Retail" className="usecase-card">
-                <Paragraph>
-                  Enable virtual fitting rooms and personalized style recommendations.
-                </Paragraph>
-                <Tag color="blue">Innovation</Tag>
-              </Card>
-            </Timeline.Item>
-            <Timeline.Item dot={<TeamOutlined style={{ fontSize: '24px' }} />}>
-              <Card title="Social Commerce" className="usecase-card">
-                <Paragraph>
-                  Power social shopping experiences with shareable virtual try-on results.
-                </Paragraph>
-                <Tag color="purple">Social Impact</Tag>
-              </Card>
-            </Timeline.Item>
-          </Timeline>
+        <video className="usecases-video" autoPlay loop muted playsInline>
+          <source src={bgVideo} type="video/mp4" />
+        </video>
+        <div className="usecases-content">
+          <div className="section-header">
+            <Title level={2} className="section-title rainbow-text">
+              Transforming Multiple Industries
+            </Title>
+          </div>
+          
+          <div className="usecases-container">
+            <Paragraph style={{ color: 'black', textShadow: '2px 2px 4px rgba(255,255,255,0.8)', fontSize: '1.2rem', marginBottom: '24px' }}>
+              Our AI-powered virtual try-on technology is revolutionizing multiple industries by providing immersive, photorealistic simulations that bridge the gap between online browsing and real-life experiences.
+            </Paragraph>
+            <Paragraph style={{ color: 'black', textShadow: '2px 2px 4px rgba(255,255,255,0.8)', fontSize: '1.2rem', marginBottom: '24px' }}>
+              In e-commerce, it dramatically reduces return rates by enabling customers to visualize products accurately, leading to higher conversion rates and improved customer satisfaction across platforms.
+            </Paragraph>
+            <Paragraph style={{ color: 'black', textShadow: '2px 2px 4px rgba(255,255,255,0.8)', fontSize: '1.2rem', marginBottom: '24px' }}>
+              Fashion retailers leverage virtual fitting rooms for enhanced shopping experiences, while social commerce platforms benefit from shareable try-on results that boost user engagement and drive viral marketing.
+            </Paragraph>
+            <Paragraph style={{ color: 'black', textShadow: '2px 2px 4px rgba(255,255,255,0.8)', fontSize: '1.2rem', marginBottom: '24px' }}>
+              Beyond fashion, this technology extends to furniture, accessories, and other product categories, transforming how consumers interact with digital commerce and revolutionizing retail experiences across various sectors.
+            </Paragraph>
+          </div>
         </div>
       </section>
 
