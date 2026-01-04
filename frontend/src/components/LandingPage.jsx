@@ -46,6 +46,7 @@ import img6 from '../assets/design/6.jpg';
 import img7 from '../assets/design/7.jpg';
 import demoVideo from '../assets/design/demo.mp4';
 import bgVideo from '../assets/design/9.mp4';
+import aiVirtualTryVideo from '../assets/design/AI_Virtual_Try.mp4';
 import './LandingPage.css';
 
 const { Title, Text, Paragraph } = Typography;
@@ -255,34 +256,12 @@ function LandingPage() {
             Powered by cutting-edge AI and computer vision technologies
           </Paragraph>
         </div>
-        
-        <Row gutter={[32, 32]} className="features-grid">
-          {features.map((feature, index) => (
-            <Col xs={24} sm={12} lg={8} key={index}>
-              <Card 
-                hoverable 
-                className="feature-card"
-                style={{ 
-                  transform: `translateY(${Math.sin(scrollY / 100 + index) * 10}px)`,
-                  transition: 'transform 0.3s ease'
-                }}
-              >
-                <div className="feature-icon-wrapper">
-                  <div className="feature-icon">
-                    {feature.icon}
-                  </div>
-                </div>
-                <Title level={4} className="feature-title">
-                  {feature.title}
-                </Title>
-                <Paragraph className="feature-description">
-                  {feature.description}
-                </Paragraph>
-                <div className="feature-glow"></div>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+
+        <video src={aiVirtualTryVideo} autoPlay loop muted playsInline controls={false} style={{ width: '100%', height: 'auto', marginBottom: '32px' }} />
+
+        <Paragraph className="section-description">
+          Experience the power of AI-driven virtual try-on technology. Our platform combines cutting-edge computer vision and deep learning models to create photorealistic clothing simulations. Watch the demo above to see how seamlessly our system transforms fashion shopping by allowing users to visualize garments on their own bodies before making a purchase.
+        </Paragraph>
       </section>
 
       {/* How It Works */}
