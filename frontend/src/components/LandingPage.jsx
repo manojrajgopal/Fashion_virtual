@@ -1,7 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   Button,
   Typography,
@@ -38,20 +36,12 @@ import {
   StarFilled,
   CheckCircleOutlined
 } from '@ant-design/icons';
-import img1 from '../assets/design/1.jpg';
-import img2 from '../assets/design/2.jpg';
-import img3 from '../assets/design/3.jpg';
-import img4 from '../assets/design/4.jpg';
-import img5 from '../assets/design/5.jpg';
-import img6 from '../assets/design/6.jpg';
-import img7 from '../assets/design/7.jpg';
-import demoVideo from '../assets/design/demo.mp4';
-import bgVideo from '../assets/design/9.mp4';
-import aiVirtualTryVideo from '../assets/design/AI_Virtual_Try.mp4';
+const demoVideo = '/design/demo.mp4';
+const bgVideo = '/design/9.mp4';
+const aiVirtualTryVideo = '/design/AI_Virtual_Try.mp4';
 import './LandingPage.css';
 
 const { Title, Text, Paragraph } = Typography;
-const { Step } = Steps;
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -104,22 +94,22 @@ function LandingPage() {
   const steps = [
     {
       title: 'Upload',
-      description: 'Upload model and garment images',
+      content: 'Upload model and garment images',
       icon: <CloudUploadOutlined />
     },
     {
       title: 'Configure',
-      description: 'Set preferences and instructions',
+      content: 'Set preferences and instructions',
       icon: <SyncOutlined />
     },
     {
       title: 'Process',
-      description: 'AI generates virtual try-on',
+      content: 'AI generates virtual try-on',
       icon: <ThunderboltOutlined />
     },
     {
       title: 'Visualize',
-      description: 'View and compare results',
+      content: 'View and compare results',
       icon: <EyeOutlined />
     }
   ];
@@ -156,7 +146,7 @@ function LandingPage() {
     { name: "AWS SageMaker", color: "#FF9900" }
   ];
 
-  const images = [img1, img2, img3, img4, img5, img6, img7];
+  const images = ['/design/1.jpg', '/design/2.jpg', '/design/3.jpg', '/design/4.jpg', '/design/5.jpg', '/design/6.jpg', '/design/7.jpg'];
 
   const stats = [
     { value: "99.8%", label: "Accuracy Rate", suffix: "+", icon: "🎯" },
@@ -187,27 +177,6 @@ function LandingPage() {
     return () => clearInterval(interval);
   }, [images.length, currentImageIndex, nextImageIndex]);
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    const sections = [featuresRef.current, howItWorksRef.current, techRef.current, usecasesRef.current, ctaRef.current];
-    sections.forEach(section => {
-      if (section) {
-        gsap.set(section, { opacity: 0, y: 50 });
-        gsap.to(section, {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse"
-          }
-        });
-      }
-    });
-  }, []);
 
   const handleGetStarted = () => {
     navigate('/try-on');
@@ -219,7 +188,6 @@ function LandingPage() {
         <div className="hero-background">
           <div className="bg-layer current" style={{ backgroundImage: `url(${images[currentImageIndex]})`, opacity: isTransitioning ? 0 : 1, filter: isTransitioning ? 'blur(5px)' : 'blur(0px)', transform: isTransitioning ? 'rotate(2deg) scale(0.98) skew(3deg, 1deg)' : 'rotate(0deg) scale(1) skew(0deg, 0deg)' }}></div>
           <div className="bg-layer next" style={{ backgroundImage: `url(${images[nextImageIndex]})`, opacity: isTransitioning ? 1 : 0, filter: 'blur(0px)', transform: isTransitioning ? 'rotate(0deg) scale(1) skew(0deg, 0deg)' : 'rotate(-2deg) scale(0.95) skew(-3deg, -1deg)' }}></div>
-          <div className="gradient-overlay"></div>
         </div>
         
         <div className="hero-content">
@@ -294,16 +262,7 @@ function LandingPage() {
           </Paragraph>
         </div>
         
-        <Steps current={-1} className="process-steps">
-          {steps.map((step, index) => (
-            <Step 
-              key={index}
-              title={step.title}
-              description={step.description}
-              icon={step.icon}
-            />
-          ))}
-        </Steps>
+        <Steps current={-1} items={steps} className="process-steps" />
         
         <video src={demoVideo} autoPlay loop muted playsInline controls={false} style={{ width: '100%', height: 'auto' }} />
       </section>

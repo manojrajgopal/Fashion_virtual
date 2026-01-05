@@ -29,7 +29,7 @@ import {
 import ImageUpload from "./ImageUpload";
 import Footer from './Footer';
 import LandingPage from "./LandingPage"; // Added import
-import bgVideo from '../assets/design/8.mp4';
+const bgVideo = '/design/8.mp4';
 
 const { Header, Content} = Layout;
 const { Title, Text } = Typography;
