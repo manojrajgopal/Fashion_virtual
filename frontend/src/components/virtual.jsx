@@ -82,16 +82,16 @@ function TryOnPage() {
 
   useEffect(() => {
     if (loading) {
-      setProgress(0);
+      setProgress(1); // start at 1%
       const interval = setInterval(() => {
         setProgress(prev => {
-          if (prev >= 100) {
+          if (prev >= 99) {
             clearInterval(interval);
-            return 100;
+            return 99;
           }
           return prev + 1;
         });
-      }, 200);
+      }, 500); // slower increment, 2s per %
       return () => clearInterval(interval);
     } else {
       setProgress(100);
@@ -141,7 +141,7 @@ function TryOnPage() {
     }
   };
 
-  const bgColor = isDarkMode ? "#0f0f0f" : "#f9fafb";
+  const bgColor = "linear-gradient(-45deg, #f093fb, #f5576c, #4facfe, #00f2fe)";
   const cardColor = isDarkMode ? "#1c1c1c" : "#ffffff";
   const textColor = isDarkMode ? "#e4e4e4" : "#111827";
   const subText = isDarkMode ? "#9ca3af" : "#4b5563";
@@ -190,10 +190,20 @@ function TryOnPage() {
       height: 100%;
       background: #10b981;
       border-radius: 10px;
-      transition: width 0.1s ease;
+      transition: width 0.5s ease;
     }
     p {
       color: #111827;
+    }
+    .animated-bg {
+      background: linear-gradient(-45deg, #f093fb, #f5576c, #4facfe, #00f2fe);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
   `;
 
@@ -204,12 +214,12 @@ function TryOnPage() {
       theme={{
         algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
         token: {
-          colorPrimary: "#0ea5e9",
+          colorPrimary: "#e91e63",
           borderRadius: 10,
         },
       }}
     >
-      <Layout style={{ minHeight: "100vh", background: bgColor }}>
+      <Layout style={{ minHeight: "100vh", background: bgColor, backgroundSize: '400% 400%', animation: 'gradientShift 15s ease infinite', overflowY: 'auto' }}>
         <Header
           style={{
             background: "transparent",
@@ -228,7 +238,7 @@ function TryOnPage() {
               ← Back to Home
             </Button>
             <Title level={3} style={{ margin: 0, color: textColor }}>
-              👗 Virtual Try-On
+              👗 Fashion Virtual Try-On
             </Title>
           </Space>
           <Switch
@@ -271,21 +281,22 @@ function TryOnPage() {
             <Title
               level={1}
               className="text-center"
-              style={{ color: textColor, marginBottom: 40 }}
+              style={{ color: textColor, marginBottom: 20 }}
             >
-              Try-On Clothes in Seconds
+              Style Your Fashion Instantly
             </Title>
 
-            <div style={{ background: cardColor, padding: 40, borderRadius: 16, boxShadow: isDarkMode ? '0 10px 30px rgba(0,0,0,0.3)' : '0 10px 30px rgba(0,0,0,0.1)', marginBottom: 40 }}>
+            <div style={{ background: cardColor, padding: 18, borderRadius: 20, border: `1px solid ${isDarkMode ? 'rgba(233,30,99,0.3)' : 'rgba(233,30,99,0.1)'}`, boxShadow: isDarkMode ? '0 10px 30px rgba(0,0,0,0.3)' : '0 10px 30px rgba(0,0,0,0.1)', marginBottom: 40, marginLeft: 'auto', marginRight: 'auto', maxWidth: '900px' }}>
               <form onSubmit={handleSubmit}>
-              <Row gutter={[24, 24]}>
+              <Row gutter={[16, 16]}>
                 {/* Model Section */}
                 <Col xs={24} md={12}>
                   <div
                     style={{
                       background: cardColor,
-                      padding: 24,
-                      borderRadius: 12,
+                      padding: 14,
+                      borderRadius: 14,
+                      border: `1px solid ${isDarkMode ? 'rgba(233,30,99,0.2)' : 'rgba(233,30,99,0.1)'}`,
                     }}
                   >
                     <Title
@@ -340,8 +351,9 @@ function TryOnPage() {
                   <div
                     style={{
                       background: cardColor,
-                      padding: 24,
-                      borderRadius: 12,
+                      padding: 14,
+                      borderRadius: 14,
+                      border: `1px solid ${isDarkMode ? 'rgba(233,30,99,0.2)' : 'rgba(233,30,99,0.1)'}`,
                     }}
                   >
                     <Title
@@ -467,6 +479,7 @@ function TryOnPage() {
                           background: cardColor,
                           padding: 24,
                           borderRadius: 16,
+                          border: `1px solid ${isDarkMode ? 'rgba(233,30,99,0.2)' : 'rgba(233,30,99,0.1)'}`,
                           textAlign: "center",
                         }}
                       >
@@ -497,6 +510,7 @@ function TryOnPage() {
                           background: cardColor,
                           padding: 24,
                           borderRadius: 16,
+                          border: `1px solid ${isDarkMode ? 'rgba(233,30,99,0.2)' : 'rgba(233,30,99,0.1)'}`,
                           textAlign: "center",
                         }}
                       >
@@ -550,6 +564,7 @@ function TryOnPage() {
                           background: cardColor,
                           padding: 16,
                           borderRadius: 12,
+                          border: `1px solid ${isDarkMode ? 'rgba(233,30,99,0.2)' : 'rgba(233,30,99,0.1)'}`,
                         }}
                       >
                         <div className="space-y-4">

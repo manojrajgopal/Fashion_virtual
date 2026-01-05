@@ -28,14 +28,14 @@ a:hover {
 
 html {
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 
 h1 {
