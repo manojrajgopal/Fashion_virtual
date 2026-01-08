@@ -39,7 +39,7 @@ def call_external_tryon_backend(person_image_bytes, cloth_image_bytes, person_co
         response = requests.post(
             f"{EXTERNAL_TRYON_URL}/virtual-try-on",
             files=files,
-            timeout=60
+            timeout=120
         )
         
         if response.status_code == 200:
