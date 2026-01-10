@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, func
+from sqlalchemy import Column, Integer, String, DateTime, func, ForeignKey
 from database import Base
 
 class User(Base):
@@ -10,3 +10,14 @@ class User(Base):
     password = Column(String(255))
     createdAt = Column(DateTime, nullable=False, server_default=func.now())
     role = Column(Integer, nullable=False, default=0)
+
+class TryOnImage(Base):
+    __tablename__ = "tryonimage"
+
+    id = Column(Integer, primary_key=True, index=True)
+    userid = Column(Integer, ForeignKey("users.id"), nullable=False)
+    personimagepath = Column(String(255), nullable=False)
+    clothimagepath = Column(String(255), nullable=False)
+    outputimagepath = Column(String(255), nullable=False)
+    createdat = Column(DateTime, server_default=func.now())
+
