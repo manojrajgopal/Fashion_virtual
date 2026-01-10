@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, HTTPException
 from models.auth import LoginRequest, SignUpRequest
-from models.user import User
+from schemas.user import User
 from database import get_db
 from sqlalchemy.orm import Session
 from utils.security import hash_password, verify_password
