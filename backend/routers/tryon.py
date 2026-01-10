@@ -6,6 +6,8 @@ import base64
 import traceback
 import requests
 from openai import OpenAI
+from utils.tryon_images import save_try_on_images
+from models.tryon_images import SaveTryOnImage
 
 load_dotenv()
 
@@ -21,7 +23,7 @@ if not EXTERNAL_TRYON_URL:
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-def call_external_tryon_backend(person_image_bytes, cloth_image_bytes, person_content_type, cloth_content_type):
+async def call_external_tryon_backend(person_image_bytes, cloth_image_bytes, person_content_type, cloth_content_type, username):
     """Call external Virtual Try-On backend service"""
     try:
         # Create file-like objects from bytes
@@ -50,7 +52,16 @@ def call_external_tryon_backend(person_image_bytes, cloth_image_bytes, person_co
                     # Validate base64 string
                     image_base64 = result['image_base64']
                     try:
-                        # Test if it's valid base64
+
+                        data = SaveTryOnImage(
+                            username=username,
+                            person_bytes=person_image_bytes,
+                            cloth_bytes=cloth_image_bytes,
+                            output_bytes=base64.b64decode(image_base64)
+                        )
+
+                        result = await save_try_on_images(data)
+
                         base64.b64decode(image_base64)
                         return f"data:image/png;base64,{image_base64}"
                     except Exception as b64_error:
@@ -77,6 +88,7 @@ async def try_on(
     gender: str = Form(""),
     garment_type: str = Form(""),
     style: str = Form(""),
+    username: str = Form("")
 ):
     try:
         # ---- Validate input parameters ----
@@ -150,11 +162,12 @@ Generate a professional fashion photography style image showing the virtual try-
         
         if model_type == "top":
             try:
-                external_image_url = call_external_tryon_backend(
+                external_image_url = await call_external_tryon_backend(
                     person_bytes, 
                     cloth_bytes, 
                     person_image.content_type, 
-                    cloth_image.content_type
+                    cloth_image.content_type,
+                    username
                 )
                 external_success = external_image_url is not None
                 if not external_success:

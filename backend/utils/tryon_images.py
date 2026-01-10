@@ -16,7 +16,8 @@ async def save_try_on_images(data: SaveTryOnImage):
 
         imageData = TryOnImage(
             userid=user.id,
-            inputimagepath="",
+            personimagepath="",
+            clothimagepath="",
             outputimagepath=""
         )
 
@@ -30,16 +31,21 @@ async def save_try_on_images(data: SaveTryOnImage):
 
         try_ondir.mkdir(parents=True, exist_ok=True)
         
-        input_path = try_ondir / "input.jpg"
+        person_path = try_ondir / "person.jpg"
+        cloth_path = try_ondir / "cloth.jpg"
         output_path = try_ondir / "output.png"
 
-        with open(input_path, "wb") as f:
-            f.write(data.input_bytes)
+        with open(person_path, "wb") as f:
+            f.write(data.person_bytes)
         
+        with open(cloth_path, "wb") as f:
+            f.write(data.cloth_bytes)
+
         with open(output_path, "wb") as f:
             f.write(data.output_bytes)
 
-        imageData.inputimagepath = str(input_path)
+        imageData.personimagepath = str(person_path)
+        imageData.clothimagepath = str(cloth_path)
         imageData.outputimagepath = str(output_path)
 
         db.commit()

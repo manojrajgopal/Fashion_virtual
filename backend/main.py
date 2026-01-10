@@ -1,10 +1,13 @@
 from fastapi import FastAPI
-from routers import tryon, auth
+from fastapi.staticfiles import StaticFiles
+from routers import tryon, auth, gallery
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
+
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Allow frontend to connect
 app.add_middleware(
@@ -17,6 +20,7 @@ app.add_middleware(
 
 app.include_router(tryon.router, prefix="/api")
 app.include_router(auth.router, prefix ="/api")
+app.include_router(gallery.router, prefix="/api")
 
 @app.get("/")
 def root():
