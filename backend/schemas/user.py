@@ -16,7 +16,8 @@ class TryOnImage(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     userid = Column(Integer, ForeignKey("users.id"), nullable=False)
-    inputimagepath = Column(String(255), nullable=False)
+    personimagepath = Column(String(255), nullable=False)
+    clothimagepath = Column(String(255), nullable=False)
     outputimagepath = Column(String(255), nullable=False)
     createdat = Column(DateTime, server_default=func.now())
 
