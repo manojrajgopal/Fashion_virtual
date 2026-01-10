@@ -5,8 +5,7 @@ import asyncio
 async def test_SaveTryOnImage():
     data = SaveTryOnImage(
         username="manoj",
-        person_bytes=b"input_image_test",
-        cloth_bytes=b"cloth_image_text",
+        input_bytes=b"input_image_test",
         output_bytes=b"output_image_test"
     )
 
