@@ -15,4 +15,3 @@ def hash_password(password: str) -> str:
 def verify_password(plain_password: str, hash_password: str) -> bool:
     safe_password = plain_password.encode("utf-8")[:72]
     return pwd_context.verify(safe_password, hash_password)
-

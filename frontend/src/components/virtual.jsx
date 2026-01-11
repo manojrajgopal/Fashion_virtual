@@ -107,15 +107,17 @@ function TryOnPage() {
 
     setLoading(true);
     const formData = new FormData();
+    var UserName = localStorage.getItem("UserName");
     formData.append("person_image", personImage);
     formData.append("cloth_image", clothImage);
     formData.append("instructions", instructions);
     
     // Add dropdown values to form data
-    formData.append("model_type", modelType || "");
+    formData.append("model_type", modelType);
     formData.append("gender", gender || "");
     formData.append("garment_type", garmentType || "");
     formData.append("style", style || "");
+    formData.append("username", UserName)
 
     try {
       const response = await axios.post("http://localhost:8000/api/try-on", formData, {

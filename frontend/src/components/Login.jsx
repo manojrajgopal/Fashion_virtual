@@ -29,6 +29,7 @@ function Login() {
     if (!response.ok) {
       setMessage(data.detail);
     } else {
+      localStorage.setItem("UserName", username);
       setMessage(data.detail);
       login();
       navigate("/");
